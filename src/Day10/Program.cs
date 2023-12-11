@@ -1,4 +1,5 @@
 ﻿using Day10;
+using Common;
 
 var input = new Input("input.txt");
 var pipeSystem = new PipeSystem(input.Matrix);
@@ -116,14 +117,6 @@ class Input
     }
 
     public char[][] Matrix { get; }
-}
-
-record struct Point(int X, int Y)
-{
-    public static Point operator +(Point a, Point b) => new(a.X + b.X, a.Y + b.Y);
-    public static Point operator -(Point a, Point b) => new(a.X - b.X, a.Y - b.Y);
-
-    public Point Invert() => new(X * -1, Y * -1);
 }
 
 static class Directions

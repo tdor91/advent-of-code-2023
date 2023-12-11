@@ -1,4 +1,6 @@
-﻿namespace Day10;
+﻿using Common;
+
+namespace Day10;
 
 internal static class GeometricUtility
 {

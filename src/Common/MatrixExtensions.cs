@@ -1,6 +1,6 @@
-﻿namespace Day10;
+﻿namespace Common;
 
-internal static class MatrixExtensions
+public static class MatrixExtensions
 {
     public static char GetSymbol(this char[][] source, Point p) => source[p.Y][p.X];
 
