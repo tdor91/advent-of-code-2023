@@ -1,22 +1,22 @@
-﻿var input = new Input("input.txt");
+﻿using System.Collections.Immutable;
+
+var input = new Input("input.txt");
 
 long sum = 0;
 foreach (var arrangement in input.SpringArrangements)
 {
-    sum += NumberOfOptions(arrangement.S, arrangement.Groups.ToArray(), new());
+    sum += NumberOfOptions(arrangement.S, ImmutableStack.CreateRange(arrangement.Groups.Reverse()), new());
 }
 Console.WriteLine(sum);
 
 sum = 0;
-int i = 0;
 foreach (var arrangement in input.SpringArrangements.Select(arrangement => arrangement.Unfold()))
 {
-    Console.WriteLine(i++);
-    sum += NumberOfOptions(arrangement.S, arrangement.Groups.ToArray(), new());
+    sum += NumberOfOptions(arrangement.S, ImmutableStack.CreateRange(arrangement.Groups.Reverse()), new());
 }
 Console.WriteLine(sum);
 
-long NumberOfOptions(string input, int[] groups, Dictionary<(string Input, int[] Groups), long> cache)
+long NumberOfOptions(string input, ImmutableStack<int> groups, Dictionary<(string Input, ImmutableStack<int> Groups), long> cache)
 {
     if (cache.ContainsKey((input, groups)))
     {
@@ -29,14 +29,14 @@ long NumberOfOptions(string input, int[] groups, Dictionary<(string Input, int[]
     return count;
 }
 
-long Calculate(string input, int[] groups, Dictionary<(string Input, int[] Groups), long> cache)
+long Calculate(string input, ImmutableStack<int> groups, Dictionary<(string Input, ImmutableStack<int> Groups), long> cache)
 {
     if (!groups.Any())
     {
         return input.Contains('#') ? 0 : 1;
     }
 
-    if (input.Length < groups.Sum() + groups.Length - 1)
+    if (input.Length < groups.Sum() + groups.Count() - 1)
     {
         return 0;
     }
@@ -50,7 +50,7 @@ long Calculate(string input, int[] groups, Dictionary<(string Input, int[] Group
             return NumberOfOptions("." + input[1..], groups, cache) + NumberOfOptions("#" + input[1..], groups, cache);
 
         case '#':
-            var requiredSize = groups[0];
+            var requiredSize = groups.Peek();
 
             var maxDeadSprings = input.TakeWhile(s => s != '.').Count();
             if (maxDeadSprings < requiredSize) // too small
@@ -68,7 +68,7 @@ long Calculate(string input, int[] groups, Dictionary<(string Input, int[] Group
                 return 0;
             }
 
-            return NumberOfOptions(input[(requiredSize + 1)..], groups[1..], cache);
+            return NumberOfOptions(input[(requiredSize + 1)..], groups.Pop(), cache);
 
         default:
             throw new Exception();
