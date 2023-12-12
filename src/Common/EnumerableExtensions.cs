@@ -6,4 +6,6 @@ public static class EnumerableExtensions
     {
         return source.Zip(source.Skip(1));
     }
+
+    public static IEnumerable<int> ToInts(this IEnumerable<string> source) => source.Select(int.Parse);
 }
