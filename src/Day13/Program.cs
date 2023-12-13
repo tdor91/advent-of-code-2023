@@ -2,24 +2,24 @@
 
 var input = new Input("input.txt");
 
-long sum = input.Matrices
+int sum = input.Matrices
     .Select(matrix =>
     {
-        var mirrorRowIndex = IndexOfMirror(matrix.StringRows(), requireError: false);
-        var mirrorColummIndex = IndexOfMirror(matrix.StringColumns(), requireError: false);
-        return (RowsBeforeMirror: mirrorRowIndex + 1, ColumnsBeforeMirror: mirrorColummIndex + 1);
+        var rowsBeforeMirror = IndexOfMirror(matrix.StringRows(), requireError: false) + 1;
+        var columnsBeforeMirror = IndexOfMirror(matrix.StringColumns(), requireError: false) + 1;
+        return rowsBeforeMirror * 100 + columnsBeforeMirror;
     })
-    .Sum(value => value.RowsBeforeMirror * 100 + value.ColumnsBeforeMirror);
+    .Sum();
 Console.WriteLine(sum);
 
 sum = input.Matrices
     .Select(matrix =>
     {
-        var mirrorRowIndex = IndexOfMirror(matrix.StringRows(), requireError: true);
-        var mirrorColummIndex = IndexOfMirror(matrix.StringColumns(), requireError: true);
-        return (RowsBeforeMirror: mirrorRowIndex + 1, ColumnsBeforeMirror: mirrorColummIndex + 1);
+        var rowsBeforeMirror = IndexOfMirror(matrix.StringRows(), requireError: true) + 1;
+        var columnsBeforeMirror = IndexOfMirror(matrix.StringColumns(), requireError: true) + 1;
+        return rowsBeforeMirror * 100 + columnsBeforeMirror;
     })
-    .Sum(value => value.RowsBeforeMirror * 100 + value.ColumnsBeforeMirror);
+    .Sum();
 Console.WriteLine(sum);
 
 static int IndexOfMirror(IEnumerable<string> lines, bool requireError)
