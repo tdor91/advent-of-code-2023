@@ -28,4 +28,18 @@ public static class MatrixExtensions
             Console.WriteLine();
         }
     }
+
+    public static IEnumerable<string> StringRows(this char[][] source)
+    {
+        return source.Select(arr => new string(arr));
+    }
+
+    public static IEnumerable<string> StringColumns(this char[][] source)
+    {
+        for (int col = 0; col < source[0].Length; col++)
+        {
+            var chars = Enumerable.Range(0, source.Length).Select(row => source[row][col]).ToArray();
+            yield return new string(chars);
+        }
+    }
 }
